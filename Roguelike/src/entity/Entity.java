@@ -6,6 +6,8 @@ public abstract class Entity extends Point {
 	private String name;
 	private String type;
 	private final int id;
+	
+	
 		
 	public Entity(String type, String name, int x, int y) {
 		super(x, y);
