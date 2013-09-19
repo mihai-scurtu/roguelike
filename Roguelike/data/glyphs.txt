@@ -1,0 +1,8 @@
+## GLYPHS ##
+
+# Essential, these need to exist 
+
+wall # 120 200 200
+floor . 150 150 100
+
+player @ 255 255 50
