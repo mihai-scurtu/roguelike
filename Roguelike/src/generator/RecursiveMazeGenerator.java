@@ -26,8 +26,6 @@ public class RecursiveMazeGenerator extends AbstractGenerator {
 		
 		this.dig(this.rng.nextInt(PADDING, this.level.getWidth() - PADDING - 1), this.rng.nextInt(PADDING, this.level.getHeight() - PADDING - 1), Direction.random(this.rng), false);
 		
-		if(this.level == null) System.out.println("why");
-		
 		if(!this.isWellGenerated(attempts)) {
 			this.generate(level, attempts + 1);
 		}
