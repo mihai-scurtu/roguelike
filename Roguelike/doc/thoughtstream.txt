@@ -1,0 +1,13 @@
+AI ideas
+========
+
+	- Implement LogicalTile and LogicalMap with costs for various decisions (abstract)
+	- Create a decent class structure to expand Entity
+	
+	
+General to-do's
+===============
+
+	- Rewrite more elegant random class pickers using an enum of .class objects?
+		- use factories 
+	- Rewrite types as enums..
