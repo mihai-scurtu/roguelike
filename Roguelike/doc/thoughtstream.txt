@@ -11,3 +11,4 @@ General to-do's
 	- Rewrite more elegant random class pickers using an enum of .class objects?
 		- use factories 
 	- Rewrite types as enums..
+	- Get lists of tiles from Levels, by type. Maybe save as state?

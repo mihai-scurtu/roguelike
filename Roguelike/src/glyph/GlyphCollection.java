@@ -26,7 +26,6 @@ public class GlyphCollection {
 		try {
 			BufferedReader buff;
 			String line;
-			boolean valid;
 			
 			buff = new BufferedReader(new FileReader("data/" + file));
 			while ((line = buff.readLine()) != null) {

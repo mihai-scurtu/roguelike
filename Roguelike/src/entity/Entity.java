@@ -7,8 +7,6 @@ public abstract class Entity extends Point {
 	private String type;
 	private final int id;
 	
-	
-		
 	public Entity(String type, String name, int x, int y) {
 		super(x, y);
 		
@@ -35,6 +33,15 @@ public abstract class Entity extends Point {
 
 	public int getID() {
 		return id;
+	}
+	
+	public void setLocation(Point p) {
+		this.setX(p.getX());
+		this.setY(p.getY());
+	}
+	
+	public Point getLocation() {
+		return new Point(this.getX(), this.getY());
 	}
 
 }
