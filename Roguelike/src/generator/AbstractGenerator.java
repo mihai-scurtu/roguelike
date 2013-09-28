@@ -1,5 +1,6 @@
 package generator;
 import level.Level;
+import level.TileType;
 import util.RandomPlus;
 
 public abstract class AbstractGenerator {
@@ -29,7 +30,7 @@ public abstract class AbstractGenerator {
 		
 		for(int i = 0; i < this.getLevel().getWidth(); i ++) {
 			for(int j = 0; j < this.getLevel().getHeight(); j++) {
-				if(this.getLevel().tile(i, j).getType() == "floor") {
+				if(this.getLevel().tile(i, j).getType() == TileType.FLOOR) {
 					floors++;
 				}
 			}

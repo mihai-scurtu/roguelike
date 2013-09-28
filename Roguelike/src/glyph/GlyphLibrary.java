@@ -7,12 +7,14 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
+import level.TileType;
+
 public class GlyphLibrary {
-	private Map<String, Glyph> list;
+	private Map<TileType, Glyph> list;
 	private static GlyphLibrary instance;
 	
 	private GlyphLibrary() {
-		this.list = new HashMap<String, Glyph>();
+		this.list = new HashMap<TileType, Glyph>();
 	}
 	
 	public static GlyphLibrary getInstance() {
@@ -26,6 +28,7 @@ public class GlyphLibrary {
 		try {
 			BufferedReader buff;
 			String line;
+			TileType type;
 			
 			buff = new BufferedReader(new FileReader("data/" + file));
 			while ((line = buff.readLine()) != null) {
@@ -39,8 +42,11 @@ public class GlyphLibrary {
 					continue;
 				}
 				
-				//TODO validation maybe?
-				this.list.put(parts[0], new Glyph(parts[1], Integer.parseInt(parts[2]), Integer.parseInt(parts[3]), Integer.parseInt(parts[4])));
+				type = TileType.find(parts[0]);
+				
+				if(type != null) {
+					this.list.put(type, new Glyph(parts[1], Integer.parseInt(parts[2]), Integer.parseInt(parts[3]), Integer.parseInt(parts[4])));
+				}
 			}
 			buff.close();
 		} catch (FileNotFoundException e) {
@@ -51,7 +57,7 @@ public class GlyphLibrary {
 		}
 	}
 	
-	public Glyph get(String type) {
+	public Glyph get(TileType type) {
 		return this.list.get(type);
 	}
 }

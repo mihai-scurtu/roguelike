@@ -17,12 +17,12 @@ public class Level {
 			this.tiles[i] = new Tile[this.height];
 			for(int j = 0; j < this.height; j++) {
 				this.tiles[i][j] = new Tile(i, j);
-				this.tiles[i][j].setType("void");
+				this.tiles[i][j].setType(TileType.VOID);
 			}
 		}
 	}
 	
-	public void fill(String type) {
+	public void fill(TileType type) {
 		for(int i = 0; i < this.width; i++) {
 			for(int j = 0; j < this.height; j++) {
 				this.tiles[i][j].setType(type);

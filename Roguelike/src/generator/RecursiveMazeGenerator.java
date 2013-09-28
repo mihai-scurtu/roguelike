@@ -1,7 +1,8 @@
 package generator;
 
-import roguelike.Roguelike;
 import level.Level;
+import level.TileType;
+import roguelike.Roguelike;
 
 
 public class RecursiveMazeGenerator extends AbstractGenerator {
@@ -22,7 +23,7 @@ public class RecursiveMazeGenerator extends AbstractGenerator {
 	public void generate(Level level, double attempts) {
 		this.level = level;
 		
-		this.level.fill("wall");
+		this.level.fill(TileType.WALL);
 		
 		this.dig(this.rng.nextInt(PADDING, this.level.getWidth() - PADDING - 1), this.rng.nextInt(PADDING, this.level.getHeight() - PADDING - 1), Direction.random(this.rng), false);
 		
@@ -38,11 +39,11 @@ public class RecursiveMazeGenerator extends AbstractGenerator {
 			return;
 		}
 		
-		if(this.level.tile(x + Direction.nextX(dir), y + Direction.nextY(dir)).getType() == "floor" && !branch) {
+		if(this.level.tile(x + Direction.nextX(dir), y + Direction.nextY(dir)).getType() == TileType.FLOOR && !branch) {
 			if(this.rng.nextDouble() > LOOP_CHANCE) return;
 		}
 		
-		this.level.tile(x, y).setType("floor");
+		this.level.tile(x, y).setType(TileType.FLOOR);
 		
 		if(this.rng.nextDouble() < BRANCH_CHANCE) {
 			this.dig(x, y, Direction.randomTurn(dir, this.rng), true);

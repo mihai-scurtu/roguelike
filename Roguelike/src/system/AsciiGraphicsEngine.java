@@ -4,6 +4,7 @@ import glyph.Glyph;
 import glyph.GlyphLibrary;
 import level.Level;
 import level.Tile;
+import level.TileType;
 
 import org.newdawn.slick.SlickException;
 
@@ -51,7 +52,7 @@ public class AsciiGraphicsEngine implements GraphicsEngine {
 	}
 
 	public void drawTile(Tile tile, int x, int y) {
-		if(tile.getType() != "void") {
+		if(tile.getType() != TileType.VOID) {
 			Glyph glyph = GlyphLibrary.getInstance().get(tile.getType());
 			
 			try {
