@@ -54,7 +54,7 @@ public class AsciiGraphicsEngine implements GraphicsEngine {
 	public void drawTile(Tile tile, int x, int y) {
 		if(tile.getType() != TileType.VOID) {
 			Glyph glyph = GlyphLibrary.getInstance().get(tile.getType());
-			
+			String c = glyph.getChar();
 			try {
 				Roguelike.getFont().drawString(x, y, glyph.getChar(), glyph.getColor());
 			} catch (SlickException e) {

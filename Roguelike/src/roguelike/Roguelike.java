@@ -100,11 +100,11 @@ public class Roguelike extends BasicGame {
  
 	@Override
 	public void render(GameContainer container, Graphics g) throws SlickException {
-		if(this.needsRefresh()) {
+//		if(this.needsRefresh()) {
 			Roguelike.getGraphicsEngine().drawLevel(Roguelike.getViewport());
-		}
+//		}
 		
-		this.isRefreshed();
+//		this.isRefreshed();
 //		this.currentLevel.draw(g);
 	}
  
