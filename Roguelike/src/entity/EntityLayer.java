@@ -6,12 +6,12 @@ import java.util.List;
 import level.Level;
 
 
-public class Layer {
+public class EntityLayer {
 	private Level parent;
 	
 	private List<Entity> entities;
 	
-	public Layer(Level parent) {
+	public EntityLayer(Level parent) {
 		this.setParent(parent);
 		this.entities = new ArrayList<Entity>();
 	}
