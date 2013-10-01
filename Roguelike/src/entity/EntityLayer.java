@@ -6,17 +6,17 @@ import java.util.List;
 import level.Level;
 
 
-public class EntityLayer {
+public class EntityLayer<T extends Entity> {
 	private Level parent;
 	
-	private List<Entity> entities;
+	private List<T> entities;
 	
 	public EntityLayer(Level parent) {
 		this.setParent(parent);
-		this.entities = new ArrayList<Entity>();
+		this.entities = new ArrayList<T>();
 	}
 	
-	public void add(Entity entity) {
+	public void add(T entity) {
 		this.entities.add(entity);
 	}
 
@@ -28,12 +28,12 @@ public class EntityLayer {
 		this.parent = parent;
 	}
 
-	public List<Entity> getEntities() {
+	public List<T> getEntities() {
 		return entities;
 	}
 	
-	public Entity get(int id) {
-		for(Entity e: this.getEntities()) {
+	public T get(int id) {
+		for(T e: this.getEntities()) {
 			if(e.getID() == id) {
 				return e;
 			}

@@ -1,11 +1,15 @@
 package level;
 
+import entity.Creature;
+import entity.EntityLayer;
 
 public class Level {
 	private Tile[][] tiles;
 	
 	private int width;
 	private int height;
+	
+	private EntityLayer<Creature> creatures;
 	
 	public Level(int width, int height) {
 		this.width = width;
@@ -42,5 +46,9 @@ public class Level {
 	
 	public int getHeight() {
 		return height;
+	}
+	
+	public EntityLayer<Creature> getCreatures() {
+		return creatures;
 	}
 }
