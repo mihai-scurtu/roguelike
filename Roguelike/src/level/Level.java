@@ -1,5 +1,10 @@
 package level;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+
+import roguelike.Roguelike;
 import entity.Creature;
 import entity.EntityLayer;
 
@@ -14,6 +19,8 @@ public class Level {
 	public Level(int width, int height) {
 		this.width = width;
 		this.height = height;
+		
+		this.creatures = new EntityLayer<Creature>(this);
 		
 		this.tiles = new Tile[width][];
 		
@@ -40,6 +47,36 @@ public class Level {
 		return this.tiles[x][y];
 	}
 	
+	// TODO make sure key search works well!
+	public Point getRandomSpawnPoint() {
+		boolean valid = false;
+		Point point = null;
+		int x, y;
+		int attempts = 0;
+		
+		List<Integer> blackListX = new ArrayList<Integer>();
+		List<Integer> blackListY = new ArrayList<Integer>();
+		
+		do {
+			x = Roguelike.getRNG().nextInt(this.getWidth());
+			y = Roguelike.getRNG().nextInt(this.getHeight());
+			
+			if(!blackListX.contains(x) || !blackListY.contains(y)) {
+				attempts += 1;
+				
+				if(this.tile(x, y).getType().isPassthrough()) {
+					point = this.tile(x, y);
+					
+					if(!this.getCreatures().containsKey(point)) {
+						valid = true;
+					}
+				}
+			}
+		} while(!valid && attempts <= this.getHeight() * this.getWidth());
+		
+		return point;
+	}
+	
 	public int getWidth() {
 		return width;
 	}
@@ -48,7 +85,7 @@ public class Level {
 		return height;
 	}
 	
-	public EntityLayer<Creature> getCreatures() {
-		return creatures;
+	public Map<Point, Creature> getCreatures() {
+		return creatures.getEntities();
 	}
 }

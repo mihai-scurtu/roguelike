@@ -3,7 +3,10 @@ package level;
 public enum TileType {
 	VOID(false, false),
 	WALL(false, false),
-	FLOOR(true, true);
+	FLOOR(true, true),
+	
+	// creature tiles
+	PLAYER(false, true);
 	
 //	private String name;
 	private boolean passthrough;

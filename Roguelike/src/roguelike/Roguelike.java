@@ -11,6 +11,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import level.Level;
+import level.Point;
 import level.Viewport;
 
 import org.newdawn.slick.AppGameContainer;
@@ -100,12 +101,14 @@ public class Roguelike extends BasicGame {
  
 	@Override
 	public void render(GameContainer container, Graphics g) throws SlickException {
-//		if(this.needsRefresh()) {
-			Roguelike.getGraphicsEngine().drawLevel(Roguelike.getViewport());
-//		}
+		Roguelike.getGraphicsEngine().drawLevel(Roguelike.getViewport());
 		
-//		this.isRefreshed();
-//		this.currentLevel.draw(g);
+//		Point p = Roguelike.getCurrentLevel().getRandomSpawnPoint();
+//		g.drawRect(
+//			Roguelike.VIEWPORT_X + (p.getX() - Roguelike.getViewport().getX()) * Roguelike.TILE_WIDTH,
+//			Roguelike.VIEWPORT_Y + (p.getY() - Roguelike.getViewport().getY()) * Roguelike.TILE_HEIGHT, 
+//			Roguelike.TILE_WIDTH, Roguelike.TILE_HEIGHT
+//		);
 	}
  
 	public static void main(String[] args) throws SlickException {
