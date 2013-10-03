@@ -1,18 +1,18 @@
 package entity;
 
+import level.Level;
 import level.Point;
 
 public abstract class Entity extends Point {
 	private String name;
-	private String type;
 	private final int id;
+	private Level parent;
 	
-	public Entity(String type, String name, int x, int y) {
+	public Entity(Level parent, int x, int y) {
 		super(x, y);
 		
 		this.id = EntityFactory.nextID();
-		this.setName(name);
-		this.setType(type);
+		this.setParent(parent);
 	}
 
 	public String getName() {
@@ -21,14 +21,6 @@ public abstract class Entity extends Point {
 
 	public void setName(String name) {
 		this.name = name;
-	}
-
-	public String getType() {
-		return type;
-	}
-
-	public void setType(String type) {
-		this.type = type;
 	}
 
 	public int getID() {
@@ -42,6 +34,14 @@ public abstract class Entity extends Point {
 	
 	public Point getLocation() {
 		return new Point(this.getX(), this.getY());
+	}
+
+	public Level getParent() {
+		return parent;
+	}
+
+	public void setParent(Level parent) {
+		this.parent = parent;
 	}
 
 }

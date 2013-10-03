@@ -1,5 +1,9 @@
 package level;
 
+import java.util.Map;
+
+import entity.Creature;
+
 public class SubLevel extends Level {
 	private Level parent;
 	
@@ -28,6 +32,11 @@ public class SubLevel extends Level {
 	@Override
 	public Tile tile(int x, int y) {
 		return this.getParent().tile(this.getX() + x, this.getY() + y);
+	}
+	
+	@Override
+	public Creature getCreature(int x, int y) {
+		return this.getParent().getCreature(this.getX() + x, this.getY() + y);
 	}
 
 	public Level getParent() {
@@ -71,6 +80,11 @@ public class SubLevel extends Level {
 	
 	public void setCenterY(int y) {
 		this.setY(x - this.getHeight() / 2);
+	}
+	
+	@Override
+	public Map<Point, Creature> getCreatures() {
+		return this.getParent().getCreatures();
 	}
 
 }

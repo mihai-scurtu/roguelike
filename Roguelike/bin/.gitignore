@@ -1,7 +1,4 @@
 /entity
-/generator
-/glyph
-/level
 /roguelike
+/level
 /system
-/util

@@ -1,9 +1,9 @@
 package system;
 
+import entity.Creature;
 import glyph.Glyph;
 import glyph.GlyphLibrary;
 import level.Level;
-import level.Tile;
 import level.TileType;
 
 import org.newdawn.slick.SlickException;
@@ -46,15 +46,20 @@ public class AsciiGraphicsEngine implements GraphicsEngine {
 				int x = this.getX() + (i * this.getTileWidth());
 				int y = this.getY() + (j * this.getTileHeight());
 				
-				this.drawTile(level.tile(i, j), x, y);
+				// check for creature
+				Creature creature = level.getCreature(i, j);
+				if(creature != null) {
+					this.drawTile(creature.getType().getTileType(), x, y);
+				} else {
+					this.drawTile(level.tile(i, j).getType(), x, y);
+				}
 			}
 		}
 	}
 
-	public void drawTile(Tile tile, int x, int y) {
-		if(tile.getType() != TileType.VOID) {
-			Glyph glyph = GlyphLibrary.getInstance().get(tile.getType());
-			String c = glyph.getChar();
+	public void drawTile(TileType type, int x, int y) {
+		if(type != TileType.VOID) {
+			Glyph glyph = GlyphLibrary.getInstance().get(type);
 			try {
 				Roguelike.getFont().drawString(x, y, glyph.getChar(), glyph.getColor());
 			} catch (SlickException e) {

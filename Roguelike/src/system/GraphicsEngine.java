@@ -1,12 +1,12 @@
 package system;
 
 import level.Level;
-import level.Tile;
+import level.TileType;
 
 public interface GraphicsEngine {
 	public void init(int x, int y, int tileWidth, int tileHeight);
 	
 	public void drawLevel(Level level);
-	public void drawTile(Tile tile, int x, int y);
+	public void drawTile(TileType type, int x, int y);
 }
 

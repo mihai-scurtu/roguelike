@@ -1,19 +1,16 @@
 package roguelike;
 
 
-import generator.AbstractGenerator;
-import generator.Direction;
-import generator.MazeGenerator;
-import generator.RecursiveMazeGenerator;
-import glyph.GlyphLibrary;
-
 import java.util.ArrayList;
 import java.util.List;
 
 import level.Level;
-import level.Point;
+import level.TileType;
 import level.Viewport;
+import level.Point;
 
+
+//import org.level.util.Point;
 import org.newdawn.slick.AppGameContainer;
 import org.newdawn.slick.BasicGame;
 import org.newdawn.slick.GameContainer;
@@ -27,6 +24,13 @@ import system.AsciiGraphicsEngine;
 import system.GraphicsEngine;
 import util.ClassPicker;
 import util.RandomPlus;
+import entity.EntityFactory;
+import entity.Player;
+import generator.AbstractGenerator;
+import generator.Direction;
+import generator.MazeGenerator;
+import generator.RecursiveMazeGenerator;
+import glyph.GlyphLibrary;
 
 
 public class Roguelike extends BasicGame {
@@ -39,6 +43,7 @@ public class Roguelike extends BasicGame {
 	private static Level currentLevel;
 	private static Viewport viewport;
 	private static RandomPlus rng = new RandomPlus();
+	private static Player player;
 	
 	/** Constants **/
 	private static final String FONT_FILE = "fonts/DejaVuSansMono.ttf";
@@ -91,6 +96,13 @@ public class Roguelike extends BasicGame {
 		
 		// Do shit
 		this.randomGenerator().generate(Roguelike.getCurrentLevel());
+
+		// Spawn player
+		Point p = Roguelike.getCurrentLevel().getRandomSpawnPoint();
+		Roguelike.setPlayer(EntityFactory.getInstance().createPlayer(Roguelike.getCurrentLevel(), p.getX(), p.getY()));
+		Roguelike.getCurrentLevel().addCreature(Roguelike.getPlayer());
+		
+		Roguelike.getViewport().setCenter(p);
 	}
  
 	@Override
@@ -122,7 +134,16 @@ public class Roguelike extends BasicGame {
 		boolean keyPressed = false;
 		
 		if(input.isKeyPressed(Input.KEY_SPACE)) {
+			Roguelike.setCurrentLevel(new Level(Roguelike.LEVEL_WIDTH, Roguelike.LEVEL_HEIGHT));
+			Roguelike.setViewport(new Viewport(Roguelike.getCurrentLevel(), Roguelike.VIEWPORT_WIDTH, Roguelike.VIEWPORT_HEIGHT));
+			
 			this.randomGenerator().generate(Roguelike.getCurrentLevel());
+			Point p = Roguelike.getCurrentLevel().getRandomSpawnPoint();
+			Roguelike.setPlayer(EntityFactory.getInstance().createPlayer(Roguelike.getCurrentLevel(), p.getX(), p.getY()));
+			Roguelike.getCurrentLevel().addCreature(Roguelike.getPlayer());
+			
+			Roguelike.getViewport().setCenter(p);
+			
 			keyPressed = true;
 		}
 		
@@ -251,6 +272,14 @@ public class Roguelike extends BasicGame {
 
 	public static void setViewport(Viewport viewport) {
 		Roguelike.viewport = viewport;
+	}
+
+	public static Player getPlayer() {
+		return player;
+	}
+
+	public static void setPlayer(Player player) {
+		Roguelike.player = player;
 	}
 	
 	

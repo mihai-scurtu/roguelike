@@ -77,12 +77,26 @@ public class Level {
 		return point;
 	}
 	
+	public Creature getCreature(int x, int y) {
+		Creature creature = this.getCreatures().get(new Point(x, y));
+		return creature;
+	}
+	
+	public void addCreature(Creature creature) {
+		creature.setParent(this);
+		this.creatures.add(creature);
+	}
+	
 	public int getWidth() {
 		return width;
 	}
 	
 	public int getHeight() {
 		return height;
+	}
+	
+	public EntityLayer<Creature> getCreatureLayer() {
+		return this.creatures;
 	}
 	
 	public Map<Point, Creature> getCreatures() {
