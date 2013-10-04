@@ -79,7 +79,7 @@ public class SubLevel extends Level {
 	}
 	
 	public void setCenterY(int y) {
-		this.setY(x - this.getHeight() / 2);
+		this.setY(y - this.getHeight() / 2);
 	}
 	
 	@Override
