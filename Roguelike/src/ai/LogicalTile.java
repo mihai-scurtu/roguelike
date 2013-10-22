@@ -3,7 +3,7 @@ package ai;
 import level.Point;
 
 public class LogicalTile extends Point {
-	double value = 0;
+	private double value = 0;
 	
 	public LogicalTile(int x, int y) {
 		super(x, y);

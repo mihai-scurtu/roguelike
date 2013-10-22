@@ -43,7 +43,7 @@ public class Level {
 //		this.draw();
 	}
 
-	public Tile tile(int x, int y) {
+	public Tile tile(int x, int y) throws ArrayIndexOutOfBoundsException {
 		return this.tiles[x][y];
 	}
 	

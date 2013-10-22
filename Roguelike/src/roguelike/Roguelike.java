@@ -10,6 +10,7 @@ import level.Viewport;
 import level.Point;
 
 
+
 //import org.level.util.Point;
 import org.newdawn.slick.AppGameContainer;
 import org.newdawn.slick.BasicGame;
@@ -20,6 +21,7 @@ import org.newdawn.slick.SlickException;
 import org.newdawn.slick.UnicodeFont;
 import org.newdawn.slick.font.effects.ColorEffect;
 
+import ai.VisionMap;
 import system.AsciiGraphicsEngine;
 import system.GraphicsEngine;
 import util.ClassPicker;
@@ -102,6 +104,8 @@ public class Roguelike extends BasicGame {
 		Roguelike.setPlayer(EntityFactory.getInstance().createPlayer(Roguelike.getCurrentLevel(), p.getX(), p.getY()));
 		Roguelike.getCurrentLevel().addCreature(Roguelike.getPlayer());
 		
+		Roguelike.getPlayer().getVisionMap().compute();
+		
 		Roguelike.getViewport().setCenter(p);
 	}
  
@@ -140,6 +144,10 @@ public class Roguelike extends BasicGame {
 			this.randomGenerator().generate(Roguelike.getCurrentLevel());
 			Point p = Roguelike.getCurrentLevel().getRandomSpawnPoint();
 			Roguelike.setPlayer(EntityFactory.getInstance().createPlayer(Roguelike.getCurrentLevel(), p.getX(), p.getY()));
+			
+			Roguelike.getPlayer().getVisionMap().compute();
+			Roguelike.getPlayer().getVisionMap().dump();
+			
 			Roguelike.getCurrentLevel().addCreature(Roguelike.getPlayer());
 			
 			Roguelike.getViewport().setCenter(p);
