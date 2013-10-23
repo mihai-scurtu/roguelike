@@ -1,14 +1,16 @@
 package system;
 
-import entity.Creature;
-import glyph.Glyph;
-import glyph.GlyphLibrary;
 import level.Level;
+import level.Tile;
 import level.TileType;
 
+import org.newdawn.slick.Color;
 import org.newdawn.slick.SlickException;
 
 import roguelike.Roguelike;
+import entity.Creature;
+import glyph.Glyph;
+import glyph.GlyphLibrary;
 
 public class AsciiGraphicsEngine implements GraphicsEngine {
 	private static AsciiGraphicsEngine instance;
@@ -51,8 +53,28 @@ public class AsciiGraphicsEngine implements GraphicsEngine {
 				if(creature != null) {
 					this.drawTile(creature.getType().getTileType(), x, y);
 				} else {
-					this.drawTile(level.tile(i, j).getType(), x, y);
+					this.drawTile(level.tile(i, j), x, y);
 				}
+			}
+		}
+	}
+	
+	public void drawTile(Tile tile, int x, int y) {
+		TileType type = tile.getType();
+		
+		if(type != TileType.VOID) {
+			Glyph glyph = GlyphLibrary.getInstance().get(type);
+			
+			Color color = glyph.getColor();
+			
+			if(!tile.canBeSeenBy(Roguelike.getPlayer())) {
+				color = color.darker(0.5f);
+			}
+			
+			try {
+				Roguelike.getFont().drawString(x, y, glyph.getChar(), color);
+			} catch (SlickException e) {
+				e.printStackTrace();
 			}
 		}
 	}

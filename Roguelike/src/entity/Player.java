@@ -1,9 +1,10 @@
 package entity;
 
 import level.Level;
+import level.Seeing;
 import ai.VisionMap;
 
-public class Player extends Creature {
+public class Player extends Creature implements Seeing {
 	private VisionMap visionMap;
 
 	public Player(Level parent, int x, int y) {
