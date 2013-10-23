@@ -1,7 +1,7 @@
 package ai;
 
-import java.util.LinkedHashSet;
-import java.util.Set;
+import java.util.ArrayList;
+import java.util.List;
 
 import level.Point;
 import level.Tile;
@@ -12,7 +12,7 @@ import entity.Creature;
  */
 public class VisionMap extends LogicalMap {
 	private int visionRange;
-	private final double INCREMENT = 0.5;
+	private final double INCREMENT = 0.1;
 	
 	public VisionMap(Creature parent, int visionRange) {
 		super(parent, visionRange, visionRange);
@@ -23,7 +23,7 @@ public class VisionMap extends LogicalMap {
 	@Override
 	public void compute() {
 		for(double i = 0; i <= this.getVisionRange(); i += this.INCREMENT){
-			for(double j = -i; j <= i; j += this.INCREMENT)  {
+			for(double j = -i; j <= i; j += this.INCREMENT) {
 				double x, y;
 				
 				x = i;
@@ -59,7 +59,7 @@ public class VisionMap extends LogicalMap {
 		double slope, x, y;
 		int levelX, levelY;
 		Tile levelTile;
-		Set<Point> points = new LinkedHashSet<Point>(this.getVisionRange());
+		List<Point> points = new ArrayList<Point>(this.getVisionRange());
 		
 //		if(i == 0f && j == 0f) {
 //			return;
@@ -69,31 +69,40 @@ public class VisionMap extends LogicalMap {
 		if(i != 0f) {
 			slope = j / i;
 			
+			if(Math.abs(i - j) > 3) {
+				System.out.println(slope);
+			}
+			
 			// Going from the inside out.
-			for(x = 1; Math.abs(x) <= this.getVisionRange(); x += (i > 0 ? 1 : -1) * this.INCREMENT) {
+			for(x = Math.signum(i); Math.abs(x) <= this.getVisionRange(); x += (i > 0 ? 1 : -1) * this.INCREMENT) {
 				y = slope * x;
 				
 				if(Math.abs(Math.round(y)) <= this.getVisionRange()) {
 					// Add point to tested set.
-					points.add(new Point((int) Math.round(x), (int) Math.round(y)));
+					Point p = new Point((int) Math.round(x), (int) Math.round(y));
+					if(!points.contains(p)) {
+						points.add(p);
+					}
 				}
 			}
 		} else {
 			System.out.println();
 			for(y = 1 * Math.signum(j); Math.abs(y) <= this.getVisionRange(); y += (j > 0 ? 1 : -1)) {
-				System.out.print((int)y + " ");
-				points.add(new Point(0, (int) y));
+				Point p = new Point(0, (int) y);
+				if(!points.contains(p)) {
+					points.add(p);
+				}
 			}
 		}
 		
-		System.out.println();
+//		System.out.println();
 //		// Update all checked points as visible or not
 		for(Point p: points) {
 			// Compute real tile coords .
 			levelX = (int) Math.floor(p.getX()) + this.getParent().getX();
 			levelY = (int) Math.floor(p.getY()) + this.getParent().getY();
 			
-			System.out.printf("%2d %2d\n", p.getX(), p.getY());
+//			System.out.printf("%2d %2d\n", p.getX(), p.getY());
 			try {
 				levelTile = this.getParent().getParent().tile(levelX, levelY);
 				
