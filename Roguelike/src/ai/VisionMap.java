@@ -12,7 +12,7 @@ import entity.creature.Creature;
  */
 public class VisionMap extends LogicalMap {
 	private int visionRange;
-	private final double INCREMENT = 0.5;
+	private final double INCREMENT = 0.25;
 	
 	public VisionMap(Creature parent, int visionRange) {
 		super(parent, visionRange, visionRange);
@@ -22,7 +22,7 @@ public class VisionMap extends LogicalMap {
 	
 	@Override
 	public void compute() {
-		for(double i = 1; i <= this.getVisionRange(); i += this.INCREMENT){
+		for(double i = this.getVisionRange(); i > 0 ; i -= this.INCREMENT){
 			for(double j = -i; j <= i; j += this.INCREMENT) {
 				double x, y;
 				
@@ -66,8 +66,8 @@ public class VisionMap extends LogicalMap {
 //			return;
 //		}
 		
-		System.out.println();
-		if(Math.abs(i) > 4 * this.INCREMENT) {
+//		System.out.println();
+		if(Math.abs(i) > 1) {
 			slope = j / i; 
 			
 //			if(Math.abs(slope) > (double) this.getVisionRange() / this.INCREMENT) return;
@@ -81,19 +81,18 @@ public class VisionMap extends LogicalMap {
 					Point p = new Point((int) Math.round(x), (int) Math.round(y));
 					
 					// Try to make a path towards the distant point
-					while(p.distanceTo(prevPoint) > 1.5) {
+					while(p.distanceTo(prevPoint) > 1) {
+						points.add(new Point(prevPoint));
 						if(Math.abs(p.getX() - prevPoint.getX()) <= Math.abs(p.getY() - prevPoint.getY())) {
-							prevPoint.setY(prevPoint.getY() + (int) Math.signum(p.getY()));
+							prevPoint.setY(prevPoint.getY() + (int) Math.signum(p.getY() - prevPoint.getY()));
 						} else {
-							prevPoint.setX(prevPoint.getX() + (int) Math.signum(p.getX()));
+							prevPoint.setX(prevPoint.getX() + (int) Math.signum(p.getX() - prevPoint.getX()));
 						}
-						
-						points.add(prevPoint);
 					}
 						
 					points.add(p);
 					
-					prevPoint = p;
+					prevPoint = new Point(p);
 				}
 			}
 		} else {
@@ -104,25 +103,24 @@ public class VisionMap extends LogicalMap {
 		}
 		
 //		System.out.println();
+//		System.out.println();
 //		// Update all checked points as visible or not
 		for(Point p: points) {
 			// Compute real tile coords .
 			levelX = (int) Math.floor(p.getX()) + this.getParent().getX();
 			levelY = (int) Math.floor(p.getY()) + this.getParent().getY();
 			
-//			System.out.printf("%4.1f %4.1f %2d %2d\n", i, j, p.getX(), p.getY());
+//			System.out.printf("%5.1f %5.1f %2d %2d\t", i, j, p.getX(), p.getY());
 			try {
 				levelTile = this.getParent().getParent().tile(levelX, levelY);
-				
 				this.tile(p.getX(), p.getY()).setValue(1);
-				
 				if(!levelTile.getType().isSeethrough()) {
 					break;
 				}
-				
-//				if(this.tile(p.getX(), p.getY()).getValue() == 0) {
-//					this.tile(p.getX(), p.getY()).setValue(1);
-//				}
+//				
+//				this.tile(p.getX(), p.getY()).setValue(1);
+//				this.markNeighbourWalls(p.getX(), p.getY(), levelTile);
+
 			} catch(ArrayIndexOutOfBoundsException e) {
 				break;
 			}
@@ -145,6 +143,30 @@ public class VisionMap extends LogicalMap {
 			}
 			
 			System.out.println();
+		}
+	}
+
+	/**
+	 * Make the neighboring walls of a floor tile visible.
+	 * @param x The x coord of the logic tile in question 
+	 * @param y The y coord of the logic tile in question
+	 * @param levelTile The concrete tile
+	 */
+	private void markNeighbourWalls(int x, int y, Tile levelTile) {
+		int i, j;
+		
+		for(i = -1; i <= 1; i++) {
+			for(j = -1; j <= 1; j++) {
+				
+				
+				try {
+					Tile tile = this.getParent().getParent().tile(levelTile.getX() + i, levelTile.getY() + j);
+					
+					if(!tile.getType().isSeethrough()) {
+						this.tile(x + i, y + j).setValue(1);;
+					}
+				} catch(ArrayIndexOutOfBoundsException e) {}
+			}
 		}
 	}
 	

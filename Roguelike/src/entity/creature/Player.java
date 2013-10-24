@@ -10,7 +10,7 @@ public class Player extends Creature implements Seeing {
 	public Player(Level parent, int x, int y) {
 		super(CreatureType.PLAYER, parent, x, y);
 		
-		this.visionMap = new VisionMap(this, 5);
+		this.visionMap = new VisionMap(this, 10);
 	}
 
 	@Override
