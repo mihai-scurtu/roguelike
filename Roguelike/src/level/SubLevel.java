@@ -2,7 +2,7 @@ package level;
 
 import java.util.Map;
 
-import entity.Creature;
+import entity.creature.Creature;
 
 public class SubLevel extends Level {
 	private Level parent;

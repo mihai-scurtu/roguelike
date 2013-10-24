@@ -5,7 +5,7 @@ import java.util.Set;
 
 import level.Point;
 import level.Tile;
-import entity.Creature;
+import entity.creature.Creature;
 
 /**
  * LogicalTile value 1 means the tile is visible, 0 otherwise

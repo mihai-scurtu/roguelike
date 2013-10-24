@@ -1,5 +1,6 @@
 package entity;
 
+import entity.creature.Player;
 import roguelike.Roguelike;
 import level.Level;
 

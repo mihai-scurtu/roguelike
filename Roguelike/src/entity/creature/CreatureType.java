@@ -1,4 +1,4 @@
-package entity;
+package entity.creature;
 
 import level.TileType;
 

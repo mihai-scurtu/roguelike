@@ -11,6 +11,7 @@ import level.Point;
 
 
 
+
 //import org.level.util.Point;
 import org.newdawn.slick.AppGameContainer;
 import org.newdawn.slick.BasicGame;
@@ -27,7 +28,7 @@ import system.GraphicsEngine;
 import util.ClassPicker;
 import util.RandomPlus;
 import entity.EntityFactory;
-import entity.Player;
+import entity.creature.Player;
 import generator.AbstractGenerator;
 import generator.Direction;
 import generator.MazeGenerator;

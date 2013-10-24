@@ -8,7 +8,7 @@ import org.newdawn.slick.Color;
 import org.newdawn.slick.SlickException;
 
 import roguelike.Roguelike;
-import entity.Creature;
+import entity.creature.Creature;
 import glyph.Glyph;
 import glyph.GlyphLibrary;
 

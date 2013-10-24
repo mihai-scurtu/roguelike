@@ -1,5 +1,7 @@
-package entity;
+package entity.creature;
 
+import entity.Actor;
+import entity.Entity;
 import level.Level;
 
 public abstract class Creature extends Entity implements Actor {

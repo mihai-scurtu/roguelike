@@ -5,8 +5,8 @@ import java.util.List;
 import java.util.Map;
 
 import roguelike.Roguelike;
-import entity.Creature;
 import entity.EntityLayer;
+import entity.creature.Creature;
 
 public class Level {
 	private Tile[][] tiles;

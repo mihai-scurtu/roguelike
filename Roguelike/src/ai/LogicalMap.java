@@ -1,6 +1,6 @@
 package ai;
 
-import entity.Creature;
+import entity.creature.Creature;
 
 /**
  * Similar to a level, but you get the tile via relative coords to the creature. (I.e. the creature is (0, 0))
