@@ -1,7 +1,7 @@
 package ai;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.LinkedHashSet;
+import java.util.Set;
 
 import level.Point;
 import level.Tile;
@@ -12,7 +12,7 @@ import entity.Creature;
  */
 public class VisionMap extends LogicalMap {
 	private int visionRange;
-	private final double INCREMENT = 0.1;
+	private final double INCREMENT = 0.5;
 	
 	public VisionMap(Creature parent, int visionRange) {
 		super(parent, visionRange, visionRange);
@@ -22,7 +22,7 @@ public class VisionMap extends LogicalMap {
 	
 	@Override
 	public void compute() {
-		for(double i = 0; i <= this.getVisionRange(); i += this.INCREMENT){
+		for(double i = 1; i <= this.getVisionRange(); i += this.INCREMENT){
 			for(double j = -i; j <= i; j += this.INCREMENT) {
 				double x, y;
 				
@@ -59,19 +59,18 @@ public class VisionMap extends LogicalMap {
 		double slope, x, y;
 		int levelX, levelY;
 		Tile levelTile;
-		List<Point> points = new ArrayList<Point>(this.getVisionRange());
+		Set<Point> points = new LinkedHashSet<Point>(this.getVisionRange());
+		Point prevPoint = new Point(0, 0);
 		
 //		if(i == 0f && j == 0f) {
 //			return;
 //		}
 		
-		
-		if(i != 0f) {
-			slope = j / i;
+		System.out.println();
+		if(Math.abs(i) > 4 * this.INCREMENT) {
+			slope = j / i; 
 			
-			if(Math.abs(i - j) > 3) {
-				System.out.println(slope);
-			}
+//			if(Math.abs(slope) > (double) this.getVisionRange() / this.INCREMENT) return;
 			
 			// Going from the inside out.
 			for(x = Math.signum(i); Math.abs(x) <= this.getVisionRange(); x += (i > 0 ? 1 : -1) * this.INCREMENT) {
@@ -80,18 +79,27 @@ public class VisionMap extends LogicalMap {
 				if(Math.abs(Math.round(y)) <= this.getVisionRange()) {
 					// Add point to tested set.
 					Point p = new Point((int) Math.round(x), (int) Math.round(y));
-					if(!points.contains(p)) {
-						points.add(p);
+					
+					// Try to make a path towards the distant point
+					while(p.distanceTo(prevPoint) > 1.5) {
+						if(Math.abs(p.getX() - prevPoint.getX()) <= Math.abs(p.getY() - prevPoint.getY())) {
+							prevPoint.setY(prevPoint.getY() + (int) Math.signum(p.getY()));
+						} else {
+							prevPoint.setX(prevPoint.getX() + (int) Math.signum(p.getX()));
+						}
+						
+						points.add(prevPoint);
 					}
+						
+					points.add(p);
+					
+					prevPoint = p;
 				}
 			}
 		} else {
-			System.out.println();
-			for(y = 1 * Math.signum(j); Math.abs(y) <= this.getVisionRange(); y += (j > 0 ? 1 : -1)) {
+			for(y = Math.signum(j); Math.abs(y) <= this.getVisionRange(); y += (j > 0 ? 1 : -1)) {
 				Point p = new Point(0, (int) y);
-				if(!points.contains(p)) {
-					points.add(p);
-				}
+				points.add(p);
 			}
 		}
 		
@@ -102,7 +110,7 @@ public class VisionMap extends LogicalMap {
 			levelX = (int) Math.floor(p.getX()) + this.getParent().getX();
 			levelY = (int) Math.floor(p.getY()) + this.getParent().getY();
 			
-//			System.out.printf("%2d %2d\n", p.getX(), p.getY());
+//			System.out.printf("%4.1f %4.1f %2d %2d\n", i, j, p.getX(), p.getY());
 			try {
 				levelTile = this.getParent().getParent().tile(levelX, levelY);
 				

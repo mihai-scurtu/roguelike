@@ -1,6 +1,8 @@
-/entity
-/roguelike
-/level
-/system
 /ai
+/entity
 /generator
+/glyph
+/level
+/roguelike
+/system
+/util
