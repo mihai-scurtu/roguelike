@@ -31,6 +31,12 @@ public abstract class LogicalMap  {
 		}
 	}
 	
+	// Tile by absolute position
+	public LogicalTile absTile(int i, int j) throws ArrayIndexOutOfBoundsException {
+		return this.tiles[i][j];
+	}
+	
+	// Tile relative to center
 	public LogicalTile tile(int i, int j) throws ArrayIndexOutOfBoundsException {
 		i += this.getWidth() / 2;
 		j += this.getHeight() / 2;

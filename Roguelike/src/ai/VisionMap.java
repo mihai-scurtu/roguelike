@@ -1,6 +1,8 @@
 package ai;
 
+import java.util.ArrayList;
 import java.util.LinkedHashSet;
+import java.util.List;
 import java.util.Set;
 
 import level.Point;
@@ -14,9 +16,12 @@ public class VisionMap extends LogicalMap {
 	private int visionRange;
 	private final double INCREMENT = 0.25;
 	
+	private List<Tile> visibleTiles;
+	
 	public VisionMap(Creature parent, int visionRange) {
 		super(parent, visionRange, visionRange);
 		
+		this.visibleTiles = new ArrayList<Tile>();
 		this.setVisionRange(visionRange);
 	}
 	
@@ -52,25 +57,18 @@ public class VisionMap extends LogicalMap {
 			}
 		}
 		
-//		this.checkVisibility(0, this);
+		
+		this.buildVisibleTileList();
 	}
 	
 	public void checkVisibility(double i, double j) {
 		double slope, x, y;
-		int levelX, levelY;
-		Tile levelTile;
 		Set<Point> points = new LinkedHashSet<Point>(this.getVisionRange());
 		Point prevPoint = new Point(0, 0);
-		
-//		if(i == 0f && j == 0f) {
-//			return;
-//		}
 		
 //		System.out.println();
 		if(Math.abs(i) > 1) {
 			slope = j / i; 
-			
-//			if(Math.abs(slope) > (double) this.getVisionRange() / this.INCREMENT) return;
 			
 			// Going from the inside out.
 			for(x = Math.signum(i); Math.abs(x) <= this.getVisionRange(); x += (i > 0 ? 1 : -1) * this.INCREMENT) {
@@ -106,13 +104,9 @@ public class VisionMap extends LogicalMap {
 //		System.out.println();
 //		// Update all checked points as visible or not
 		for(Point p: points) {
-			// Compute real tile coords .
-			levelX = (int) Math.floor(p.getX()) + this.getParent().getX();
-			levelY = (int) Math.floor(p.getY()) + this.getParent().getY();
-			
 //			System.out.printf("%5.1f %5.1f %2d %2d\t", i, j, p.getX(), p.getY());
 			try {
-				levelTile = this.getParent().getParent().tile(levelX, levelY);
+				Tile levelTile = this.getLevelTile(p);
 				this.tile(p.getX(), p.getY()).setValue(1);
 				if(!levelTile.getType().isSeethrough()) {
 					break;
@@ -145,6 +139,28 @@ public class VisionMap extends LogicalMap {
 			System.out.println();
 		}
 	}
+	
+	public Tile getLevelTile(Point p) throws ArrayIndexOutOfBoundsException {
+		// Compute real tile coords .
+		int levelX = p.getX() + this.getParent().getX();
+		int levelY = p.getY() + this.getParent().getY();
+		
+		return this.getParent().getParent().tile(levelX, levelY);
+	}
+	
+	private void buildVisibleTileList() {
+		this.getVisibleTiles().clear();
+		for(int i = 0; i < this.getWidth(); i++) {
+			for(int j = 0; j < this.getHeight(); j++) {
+				LogicalTile p = this.absTile(i, j);
+				
+				if(p.getValue() > 0) {
+					this.getVisibleTiles().add(this.getLevelTile(p));
+				}
+			}
+		}
+	}
+	
 
 	/**
 	 * Make the neighboring walls of a floor tile visible.
@@ -152,6 +168,7 @@ public class VisionMap extends LogicalMap {
 	 * @param y The y coord of the logic tile in question
 	 * @param levelTile The concrete tile
 	 */
+	@SuppressWarnings("unused")
 	private void markNeighbourWalls(int x, int y, Tile levelTile) {
 		int i, j;
 		
@@ -176,6 +193,10 @@ public class VisionMap extends LogicalMap {
 
 	public void setVisionRange(int visionRange) {
 		this.visionRange = visionRange;
+	}
+
+	public List<Tile> getVisibleTiles() {
+		return visibleTiles;
 	}
 
 }
